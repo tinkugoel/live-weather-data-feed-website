@@ -2,6 +2,8 @@
 
 A lightweight weather and air-quality data pipeline that ingests, validates, transforms, and publishes time-series observations using Python, DuckDB, and GitHub Pages.
 
+Website URL: [Live Weather & Air Quality Pipeline](https://tinkugoel.github.io/live-weather-data-feed-website/)
+
 ## About this project
 
 This repository captures a complete end-to-end data pipeline for tracking air quality and weather in selected cities. The pipeline is designed to be transparent, versioned, and reproducible by storing raw observations in CSV and publishing a static dashboard from generated JSON.
