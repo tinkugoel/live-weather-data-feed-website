@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Weather &amp; Air Quality Pipeline</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; padding: 24px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+  .sub a { color: var(--accent); }
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px; }
+  .stat .v { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+  .stat .l { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .city { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+  .city h3 { font-size: 1rem; margin-bottom: 8px; }
+  .city .temp { font-size: 1.6rem; font-weight: 700; }
+  .city .row { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .aqi { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; margin-top: 8px; }
+  .aqi.good { background: #14532d; color: #86efac; }
+  .aqi.moderate { background: #713f12; color: #fde047; }
+  .aqi.unhealthy { background: #7f1d1d; color: #fca5a5; }
+  .chart-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 20px; }
+  .chart-box h2 { font-size: 1rem; margin-bottom: 12px; color: var(--muted); }
+  footer { color: var(--muted); font-size: 0.8rem; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Live Weather &amp; Air Quality Pipeline</h1>
+  <p class="sub">
+    Data ingested every 6 hours by <a href="https://github.com/tinkugoel/live-weather-data-feed-website/actions">GitHub Actions</a>,
+    transformed with DuckDB, deployed to GitHub Pages. Source: Open-Meteo.
+    <span id="generated"></span>
+  </p>
+  <div class="stats" id="stats"></div>
+  <div class="cards" id="cards"></div>
+  <div class="chart-box"><h2>Temperature trend (&deg;C)</h2><canvas id="tempChart" height="90"></canvas></div>
+  <div class="chart-box"><h2>AQI trend</h2><canvas id="aqiChart" height="90"></canvas></div>
+  <footer>Built with GitHub Actions &middot; DuckDB &middot; Chart.js &middot; <a style="color:var(--accent)" href="https://github.com/tinkugoel/live-weather-data-feed-website">view source</a></footer>
+</div>
+
+<script>
+const PALETTE = ['#38bdf8','#f472b6','#facc15','#4ade80','#a78bfa','#fb923c','#f87171','#34d399'];
+
+function aqiClass(v) { return v <= 50 ? 'good' : v <= 100 ? 'moderate' : 'unhealthy'; }
+function aqiLabel(v) { return v <= 50 ? 'Good' : v <= 100 ? 'Moderate' : 'Unhealthy'; }
+
+function lineChart(canvasId, series, field) {
+  const cities = [...new Set(series.map(r => r.city))];
+  const labels = [...new Set(series.map(r => r.timestamp_ist))].sort();
+  const datasets = cities.map((c, i) => {
+    const byTs = Object.fromEntries(series.filter(r => r.city === c).map(r => [r.timestamp_ist, r[field]]));
+    return {
+      label: c,
+      data: labels.map(ts => byTs[ts] ?? null),
+      borderColor: PALETTE[i % PALETTE.length],
+      backgroundColor: PALETTE[i % PALETTE.length],
+      tension: 0.3, spanGaps: true, pointRadius: 2,
+    };
+  });
+  new Chart(document.getElementById(canvasId), {
+    type: 'line',
+    data: { labels: labels.map(ts => ts.slice(5, 16).replace('T', ' ')), datasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#e2e8f0' } } },
+      scales: {
+        x: { ticks: { color: '#94a3b8', maxTicksLimit: 12 }, grid: { color: '#1e293b' } },
+        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+      },
+    },
+  });
+}
+
+fetch('data.json')
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById('generated').textContent = `Last updated ${d.generated_at_ist} IST.`;
+
+    document.getElementById('stats').innerHTML = [
+      [d.stats.total_observations.toLocaleString(), 'Observations'],
+      [d.stats.cities, 'Cities tracked'],
+      [String(d.stats.collecting_since).slice(0, 10), 'Collecting since'],
+    ].map(([v, l]) => `<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+    document.getElementById('cards').innerHTML = d.latest.map(r => `
+      <div class="city">
+        <h3>${r.city}</h3>
+        <div class="temp">${r.temperature_c}&deg;C</div>
+        <div class="row"><span>Humidity</span><span>${r.humidity_pct}%</span></div>
+        <div class="row"><span>Wind</span><span>${r.wind_speed_kmh} km/h</span></div>
+        <div class="row"><span>PM2.5</span><span>${r.pm2_5} &micro;g/m&sup3;</span></div>
+        <span class="aqi ${aqiClass(r.us_aqi)}">AQI ${r.us_aqi} &middot; ${aqiLabel(r.us_aqi)}</span>
+      </div>`).join('');
+
+    lineChart('tempChart', d.series, 'temperature_c');
+    lineChart('aqiChart', d.series, 'us_aqi');
+  })
+  .catch(err => {
+    document.getElementById('stats').innerHTML =
+      `<div class="stat"><div class="v">No data yet</div><div class="l">${err.message}</div></div>`;
+  });
+</script>
+</body>
+</html>

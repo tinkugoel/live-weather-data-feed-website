@@ -1,0 +1,4 @@
+requests>=2.31
+duckdb>=0.10
+pytest>=8.0
+ruff>=0.4

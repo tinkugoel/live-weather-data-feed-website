@@ -1,0 +1,68 @@
+name: Data Pipeline
+
+on:
+  schedule:
+    - cron: "17 */6 * * *" # every 6 hours (offset to avoid top-of-hour congestion)
+  workflow_dispatch: {} # manual runs from the Actions tab
+  push:
+    branches: [main] # redeploy dashboard on code changes (no ingestion)
+
+permissions:
+  contents: write # commit new observations back to the repo
+  pages: write # deploy to GitHub Pages
+  id-token: write # OIDC token for the Pages deployment
+
+concurrency:
+  group: pipeline
+  cancel-in-progress: false
+
+jobs:
+  etl-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Ingest fresh observations
+        if: github.event_name != 'push'
+        run: python src/ingest.py
+
+      - name: Validate data quality
+        run: python src/validate.py
+
+      - name: Transform with DuckDB
+        run: python src/transform.py
+
+      - name: Commit new observations
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "tinkugoel_actions"
+          git config user.email "tinkugoel_actions@github.com"
+          git add data/ site/data.json
+          git diff --cached --quiet || git commit -m "data: ingest $(date +'%Y-%m-%dT%H:%M:%S%z')"
+          git pull --rebase origin main
+          git push
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload dashboard artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
