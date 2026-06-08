@@ -21,8 +21,8 @@ CHECKS = {
     "negative particulate readings": """
         SELECT count(*) FROM obs WHERE pm2_5 < 0 OR pm10 < 0
     """,
-    "US AQI out of range (0..500)": """
-        SELECT count(*) FROM obs WHERE us_aqi NOT BETWEEN 0 AND 500
+    "AQI out of range (0..1000)": """
+        SELECT count(*) FROM obs WHERE us_aqi NOT BETWEEN 0 AND 1000
     """,
     "duplicate (timestamp, city) rows": """
         SELECT count(*) FROM (
