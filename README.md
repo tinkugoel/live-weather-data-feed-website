@@ -47,7 +47,6 @@ The results are appended to `data/observations.csv` with the following schema:
 - temperature values outside `-60..60 °C`
 - humidity outside `0..100 %`
 - negative particulate readings
-- AQI outside `0..500`
 - duplicate `(timestamp_ist, city)` rows
 
 If any validation rule fails, the pipeline stops before publishing.
@@ -82,7 +81,7 @@ Two GitHub Actions workflows are included:
   - runs `pytest`
 
 - `.github/workflows/pipeline.yml`
-  - runs every 6 hours
+  - runs every 2 hours
   - ingests fresh observations
   - validates the raw data
   - transforms the dataset to JSON
