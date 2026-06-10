@@ -47,6 +47,9 @@ jobs:
 
       - name: Commit new observations
         if: github.event_name != 'push'
+        env:
+          GH_TOKEN: ${{ secrets.PROFILE_PAT }}
+          TZ: Asia/Kolkata # For configuring timezone of IST in GH env
         run: |
           git config user.name "tinkugoel"
           git config user.email "tinkugoel@github.com"
