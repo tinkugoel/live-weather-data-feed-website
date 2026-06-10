@@ -52,7 +52,7 @@ jobs:
           TZ: Asia/Kolkata # For configuring timezone of IST in GH env
         run: |
           git config user.name "tinkugoel"
-          git config user.email "tinkugoel@github.com"
+          git config user.email "tinkugoel@users.noreply.github.com"
           git add data/ site/data.json
           git diff --cached --quiet || git commit -m "data: ingest $(date +'%Y-%m-%dT%H:%M:%S%z')"
           git pull --rebase origin main
