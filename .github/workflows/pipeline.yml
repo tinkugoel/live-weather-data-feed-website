@@ -48,8 +48,8 @@ jobs:
       - name: Commit new observations
         if: github.event_name != 'push'
         run: |
-          git config user.name "tinkugoel_actions"
-          git config user.email "tinkugoel_actions@github.com"
+          git config user.name "tinkugoel"
+          git config user.email "tinkugoel@github.com"
           git add data/ site/data.json
           git diff --cached --quiet || git commit -m "data: ingest $(date +'%Y-%m-%dT%H:%M:%S%z')"
           git pull --rebase origin main
