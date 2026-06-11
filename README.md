@@ -1,3 +1,4 @@
+[![Data Pipeline](https://github.com/tinkugoel/live-weather-data-feed-website/actions/workflows/pipeline.yml/badge.svg)](https://github.com/tinkugoel/live-weather-data-feed-website/actions/workflows/pipeline.yml)
 # Live Weather Data Feed Pipeline
 
 A lightweight weather and air-quality data pipeline that ingests, validates, transforms, and publishes time-series observations using Python, DuckDB, and GitHub Pages.
