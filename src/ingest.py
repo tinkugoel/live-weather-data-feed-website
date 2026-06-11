@@ -70,13 +70,13 @@ def fetch_city(city: dict) -> dict:
             "%Y-%m-%dT%H:%M:%S"
         ),
         "city": city["name"],
-        "temperature_c": w.Variables(0).Value(),
-        "humidity_pct": w.Variables(1).Value(),
-        "wind_speed_kmh": w.Variables(2).Value(),
-        "precipitation_mm": w.Variables(3).Value(),
-        "pm2_5": a.Variables(0).Value(),
-        "pm10": a.Variables(1).Value(),
-        "us_aqi": a.Variables(2).Value(),
+        "temperature_c": round(w.Variables(0).Value(), 1),
+        "humidity_pct": int(w.Variables(1).Value()),
+        "wind_speed_kmh": round(w.Variables(2).Value(), 1),
+        "precipitation_mm": round(w.Variables(3).Value(), 1),
+        "pm2_5": round(a.Variables(0).Value(), 1),
+        "pm10": round(a.Variables(1).Value(), 1),
+        "us_aqi": int(a.Variables(2).Value()),
     }
 
 
