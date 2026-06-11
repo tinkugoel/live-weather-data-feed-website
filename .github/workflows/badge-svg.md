@@ -1,0 +1,1 @@
+[![Data Pipeline](https://github.com/tinkugoel/live-weather-data-feed-website/actions/workflows/pipeline.yml/badge.svg)](https://github.com/tinkugoel/live-weather-data-feed-website/actions/workflows/pipeline.yml)
