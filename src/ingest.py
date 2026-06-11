@@ -13,7 +13,7 @@ CITIES = [
     {"name": "Bengaluru", "lat": 12.9716, "lon": 77.5946},
     {"name": "Delhi", "lat": 28.6448, "lon": 77.2167},
     {"name": "Mumbai", "lat": 19.0761, "lon": 72.8774},
-    {"name": "Kurukshetra", "lat": 29.9695, "lon": 76.8783},
+    # {"name": "Kurukshetra", "lat": 29.9695, "lon": 76.8783},
     {"name": "New York", "lat": 40.7128, "lon": -74.0060},
     {"name": "Chennai", "lat": 13.0878, "lon": 80.2785},
     {"name": "Gurugram", "lat": 28.4575, "lon": 77.0263}
@@ -45,7 +45,7 @@ def fetch_city(city: dict) -> dict:
     """Fetch current weather and air-quality readings for one city."""
     coords = {"latitude": city["lat"], "longitude": city["lon"]}
 
-    weather = requests.weather_api(
+    weather = openmeteo.weather_api(
         WEATHER_URL,
         params={
             **coords,
@@ -54,29 +54,29 @@ def fetch_city(city: dict) -> dict:
         },
         timeout=30,
     )
-    weather.raise_for_status()
-    w = weather.json()["current"]
+    
+    w = weather[0].Current()
 
-    air = requests.get(
+    air = openmeteo.weather_api(
         AIR_URL,
         params={**coords, "current": "pm2_5,pm10,us_aqi"},
         timeout=30,
     )
-    air.raise_for_status()
-    a = air.json()["current"]
+    
+    a = air[0].Current()
 
     return {
         "timestamp_ist": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).strftime(
             "%Y-%m-%dT%H:%M:%S"
         ),
         "city": city["name"],
-        "temperature_c": w["temperature_2m"],
-        "humidity_pct": w["relative_humidity_2m"],
-        "wind_speed_kmh": w["wind_speed_10m"],
-        "precipitation_mm": w["precipitation"],
-        "pm2_5": a["pm2_5"],
-        "pm10": a["pm10"],
-        "us_aqi": a["us_aqi"],
+        "temperature_c": w.Variables(0).Value(),
+        "humidity_pct": w.Variables(1).Value(),
+        "wind_speed_kmh": w.Variables(2).Value(),
+        "precipitation_mm": w.Variables(3).Value(),
+        "pm2_5": a.Variables(0).Value(),
+        "pm10": a.Variables(1).Value(),
+        "us_aqi": a.Variables(2).Value(),
     }
 
 
