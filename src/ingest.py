@@ -5,17 +5,25 @@ import datetime
 import pathlib
 import sys
 
-import requests
+import requests_cache
+import openmeteo_requests
+from retry_requests import retry
 
 CITIES = [
-    {"name": "Bengaluru", "lat": 12.97, "lon": 77.59},
-    {"name": "Delhi", "lat": 28.61, "lon": 77.21},
-    {"name": "Mumbai", "lat": 19.08, "lon": 72.88},
-    {"name": "Kurukshetra", "lat": 29.96, "lon": 76.83},
-    {"name": "New York", "lat": 40.71, "lon": -74.01},
-    {"name": "Chennai", "lat": 13.08, "lon": 80.27},
-    {"name": "Gurugram", "lat": 28.45, "lon": 77.02}
+    {"name": "Bengaluru", "lat": 12.9716, "lon": 77.5946},
+    {"name": "Delhi", "lat": 28.6448, "lon": 77.2167},
+    {"name": "Mumbai", "lat": 19.0761, "lon": 72.8774},
+    {"name": "Kurukshetra", "lat": 29.9695, "lon": 76.8783},
+    {"name": "New York", "lat": 40.7128, "lon": -74.0060},
+    {"name": "Chennai", "lat": 13.0878, "lon": 80.2785},
+    {"name": "Gurugram", "lat": 28.4575, "lon": 77.0263}
 ]
+
+# Setup the Open-Meteo API client with cache and retry on error
+cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+openmeteo = openmeteo_requests.Client(session = retry_session)
+
 
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
 AIR_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
@@ -37,11 +45,12 @@ def fetch_city(city: dict) -> dict:
     """Fetch current weather and air-quality readings for one city."""
     coords = {"latitude": city["lat"], "longitude": city["lon"]}
 
-    weather = requests.get(
+    weather = requests.weather_api(
         WEATHER_URL,
         params={
             **coords,
             "current": "temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation",
+            "timezone": "IST"
         },
         timeout=30,
     )
