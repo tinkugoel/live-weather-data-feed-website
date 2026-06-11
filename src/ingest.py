@@ -5,17 +5,25 @@ import datetime
 import pathlib
 import sys
 
-import requests
+import requests_cache
+import openmeteo_requests
+from retry_requests import retry
 
 CITIES = [
-    {"name": "Bengaluru", "lat": 12.97, "lon": 77.59},
-    {"name": "Delhi", "lat": 28.61, "lon": 77.21},
-    {"name": "Mumbai", "lat": 19.08, "lon": 72.88},
-    {"name": "Kurukshetra", "lat": 29.96, "lon": 76.83},
-    {"name": "New York", "lat": 40.71, "lon": -74.01},
-    {"name": "Chennai", "lat": 13.08, "lon": 80.27},
-    {"name": "Gurugram", "lat": 28.45, "lon": 77.02}
+    {"name": "Bengaluru", "lat": 12.9716, "lon": 77.5946},
+    {"name": "Delhi", "lat": 28.6448, "lon": 77.2167},
+    {"name": "Mumbai", "lat": 19.0761, "lon": 72.8774},
+    # {"name": "Kurukshetra", "lat": 29.9695, "lon": 76.8783},
+    {"name": "New York", "lat": 40.7128, "lon": -74.0060},
+    {"name": "Chennai", "lat": 13.0878, "lon": 80.2785},
+    {"name": "Gurugram", "lat": 28.4575, "lon": 77.0263}
 ]
+
+# Setup the Open-Meteo API client with cache and retry on error
+cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+openmeteo = openmeteo_requests.Client(session = retry_session)
+
 
 WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
 AIR_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
@@ -37,37 +45,38 @@ def fetch_city(city: dict) -> dict:
     """Fetch current weather and air-quality readings for one city."""
     coords = {"latitude": city["lat"], "longitude": city["lon"]}
 
-    weather = requests.get(
+    weather = openmeteo.weather_api(
         WEATHER_URL,
         params={
             **coords,
             "current": "temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation",
+            "timezone": "IST"
         },
         timeout=30,
     )
-    weather.raise_for_status()
-    w = weather.json()["current"]
+    
+    w = weather[0].Current()
 
-    air = requests.get(
+    air = openmeteo.weather_api(
         AIR_URL,
         params={**coords, "current": "pm2_5,pm10,us_aqi"},
         timeout=30,
     )
-    air.raise_for_status()
-    a = air.json()["current"]
+    
+    a = air[0].Current()
 
     return {
         "timestamp_ist": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).strftime(
             "%Y-%m-%dT%H:%M:%S"
         ),
         "city": city["name"],
-        "temperature_c": w["temperature_2m"],
-        "humidity_pct": w["relative_humidity_2m"],
-        "wind_speed_kmh": w["wind_speed_10m"],
-        "precipitation_mm": w["precipitation"],
-        "pm2_5": a["pm2_5"],
-        "pm10": a["pm10"],
-        "us_aqi": a["us_aqi"],
+        "temperature_c": w.Variables(0).Value(),
+        "humidity_pct": w.Variables(1).Value(),
+        "wind_speed_kmh": w.Variables(2).Value(),
+        "precipitation_mm": w.Variables(3).Value(),
+        "pm2_5": a.Variables(0).Value(),
+        "pm10": a.Variables(1).Value(),
+        "us_aqi": a.Variables(2).Value(),
     }
 
 
