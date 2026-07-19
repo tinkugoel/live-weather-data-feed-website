@@ -1,85 +1,79 @@
 {
- "generated_at_ist": "2026-07-19T12:14:44",
+ "generated_at_ist": "2026-07-19T15:31:45",
  "stats": {
-  "total_observations": 1791,
+  "total_observations": 1797,
   "cities": 6,
   "collecting_since": "2026-06-08 00:11:45"
  },
  "latest": [
   {
-   "timestamp_ist": "2026-07-19 12:14:42",
+   "timestamp_ist": "2026-07-19 15:31:42",
    "city": "Bengaluru",
-   "temperature_c": 26.6,
-   "humidity_pct": 59.0,
-   "wind_speed_kmh": 17.2,
-   "precipitation_mm": 0.0,
-   "pm2_5": 10.8,
-   "pm10": 23.2,
-   "us_aqi": 52.0
-  },
-  {
-   "timestamp_ist": "2026-07-19 12:14:43",
-   "city": "Chennai",
-   "temperature_c": 33.0,
+   "temperature_c": 28.4,
    "humidity_pct": 54.0,
-   "wind_speed_kmh": 6.2,
+   "wind_speed_kmh": 13.2,
    "precipitation_mm": 0.0,
-   "pm2_5": 20.8,
-   "pm10": 31.4,
-   "us_aqi": 74.0
+   "pm2_5": 10.1,
+   "pm10": 23.1,
+   "us_aqi": 51.0
   },
   {
-   "timestamp_ist": "2026-07-19 12:14:42",
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "Chennai",
+   "temperature_c": 32.2,
+   "humidity_pct": 65.0,
+   "wind_speed_kmh": 9.6,
+   "precipitation_mm": 0.1,
+   "pm2_5": 23.2,
+   "pm10": 35.4,
+   "us_aqi": 76.0
+  },
+  {
+   "timestamp_ist": "2026-07-19 15:31:43",
    "city": "Delhi",
-   "temperature_c": 36.8,
-   "humidity_pct": 43.0,
-   "wind_speed_kmh": 8.4,
-   "precipitation_mm": 0.0,
-   "pm2_5": 80.1,
-   "pm10": 322.2,
-   "us_aqi": 492.0
-  },
-  {
-   "timestamp_ist": "2026-07-19 12:14:43",
-   "city": "Gurugram",
-   "temperature_c": 36.2,
+   "temperature_c": 36.6,
    "humidity_pct": 46.0,
-   "wind_speed_kmh": 9.0,
+   "wind_speed_kmh": 6.5,
    "precipitation_mm": 0.0,
-   "pm2_5": 80.6,
-   "pm10": 383.7,
-   "us_aqi": 423.0
+   "pm2_5": 126.7,
+   "pm10": 717.1,
+   "us_aqi": 376.0
   },
   {
-   "timestamp_ist": "2026-07-19 12:14:42",
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "Gurugram",
+   "temperature_c": 35.8,
+   "humidity_pct": 46.0,
+   "wind_speed_kmh": 8.1,
+   "precipitation_mm": 0.0,
+   "pm2_5": 108.5,
+   "pm10": 618.4,
+   "us_aqi": 310.0
+  },
+  {
+   "timestamp_ist": "2026-07-19 15:31:43",
    "city": "Mumbai",
-   "temperature_c": 25.9,
-   "humidity_pct": 93.0,
-   "wind_speed_kmh": 13.1,
-   "precipitation_mm": 0.3,
-   "pm2_5": 15.7,
-   "pm10": 30.7,
-   "us_aqi": 62.0
+   "temperature_c": 27.4,
+   "humidity_pct": 77.0,
+   "wind_speed_kmh": 16.0,
+   "precipitation_mm": 0.2,
+   "pm2_5": 10.8,
+   "pm10": 20.4,
+   "us_aqi": 61.0
   },
   {
-   "timestamp_ist": "2026-07-19 12:14:43",
+   "timestamp_ist": "2026-07-19 15:31:43",
    "city": "New York",
-   "temperature_c": 23.4,
-   "humidity_pct": 88.0,
-   "wind_speed_kmh": 14.8,
+   "temperature_c": 21.1,
+   "humidity_pct": 85.0,
+   "wind_speed_kmh": 12.3,
    "precipitation_mm": 0.0,
-   "pm2_5": 9.1,
-   "pm10": 9.1,
-   "us_aqi": 145.0
+   "pm2_5": 7.1,
+   "pm10": 7.2,
+   "us_aqi": 132.0
   }
  ],
  "series": [
-  {
-   "timestamp_ist": "2026-07-13 17:01:48",
-   "city": "Bengaluru",
-   "temperature_c": 31.8,
-   "us_aqi": 51.0
-  },
   {
    "timestamp_ist": "2026-07-13 20:44:46",
    "city": "Bengaluru",
@@ -411,10 +405,10 @@
    "us_aqi": 52.0
   },
   {
-   "timestamp_ist": "2026-07-13 17:01:49",
-   "city": "Chennai",
-   "temperature_c": 34.2,
-   "us_aqi": 67.0
+   "timestamp_ist": "2026-07-19 15:31:42",
+   "city": "Bengaluru",
+   "temperature_c": 28.4,
+   "us_aqi": 51.0
   },
   {
    "timestamp_ist": "2026-07-13 20:44:47",
@@ -747,10 +741,10 @@
    "us_aqi": 74.0
   },
   {
-   "timestamp_ist": "2026-07-13 17:01:49",
-   "city": "Delhi",
-   "temperature_c": 35.3,
-   "us_aqi": 512.0
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "Chennai",
+   "temperature_c": 32.2,
+   "us_aqi": 76.0
   },
   {
    "timestamp_ist": "2026-07-13 20:44:46",
@@ -1083,10 +1077,10 @@
    "us_aqi": 492.0
   },
   {
-   "timestamp_ist": "2026-07-13 17:01:50",
-   "city": "Gurugram",
-   "temperature_c": 35.2,
-   "us_aqi": 546.0
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "Delhi",
+   "temperature_c": 36.6,
+   "us_aqi": 376.0
   },
   {
    "timestamp_ist": "2026-07-13 20:44:47",
@@ -1419,10 +1413,10 @@
    "us_aqi": 423.0
   },
   {
-   "timestamp_ist": "2026-07-13 17:01:49",
-   "city": "Mumbai",
-   "temperature_c": 28.8,
-   "us_aqi": 53.0
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "Gurugram",
+   "temperature_c": 35.8,
+   "us_aqi": 310.0
   },
   {
    "timestamp_ist": "2026-07-13 20:44:47",
@@ -1755,10 +1749,10 @@
    "us_aqi": 62.0
   },
   {
-   "timestamp_ist": "2026-07-13 17:01:49",
-   "city": "New York",
-   "temperature_c": 22.3,
-   "us_aqi": 64.0
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "Mumbai",
+   "temperature_c": 27.4,
+   "us_aqi": 61.0
   },
   {
    "timestamp_ist": "2026-07-13 20:44:47",
@@ -2089,68 +2083,74 @@
    "city": "New York",
    "temperature_c": 23.4,
    "us_aqi": 145.0
+  },
+  {
+   "timestamp_ist": "2026-07-19 15:31:43",
+   "city": "New York",
+   "temperature_c": 21.1,
+   "us_aqi": 132.0
   }
  ],
  "daily": [
   {
    "day": "2026-07-19",
    "city": "Bengaluru",
-   "avg_temperature_c": 22.4,
+   "avg_temperature_c": 23.4,
    "min_temperature_c": 20.5,
-   "max_temperature_c": 26.6,
+   "max_temperature_c": 28.4,
    "avg_us_aqi": 51.0,
    "max_pm2_5": 10.8,
-   "observations": 5
+   "observations": 6
   },
   {
    "day": "2026-07-19",
    "city": "Chennai",
-   "avg_temperature_c": 28.1,
+   "avg_temperature_c": 28.8,
    "min_temperature_c": 25.7,
    "max_temperature_c": 33.0,
    "avg_us_aqi": 73.0,
    "max_pm2_5": 23.9,
-   "observations": 5
+   "observations": 6
   },
   {
    "day": "2026-07-19",
    "city": "Delhi",
-   "avg_temperature_c": 32.9,
+   "avg_temperature_c": 33.6,
    "min_temperature_c": 31.0,
    "max_temperature_c": 36.8,
-   "avg_us_aqi": 568.0,
+   "avg_us_aqi": 536.0,
    "max_pm2_5": 156.5,
-   "observations": 5
+   "observations": 6
   },
   {
    "day": "2026-07-19",
    "city": "Gurugram",
-   "avg_temperature_c": 32.3,
+   "avg_temperature_c": 32.9,
    "min_temperature_c": 30.0,
    "max_temperature_c": 36.2,
-   "avg_us_aqi": 520.0,
+   "avg_us_aqi": 485.0,
    "max_pm2_5": 156.0,
-   "observations": 5
+   "observations": 6
   },
   {
    "day": "2026-07-19",
    "city": "Mumbai",
-   "avg_temperature_c": 26.1,
+   "avg_temperature_c": 26.3,
    "min_temperature_c": 25.5,
-   "max_temperature_c": 26.5,
+   "max_temperature_c": 27.4,
    "avg_us_aqi": 61.0,
    "max_pm2_5": 16.0,
-   "observations": 5
+   "observations": 6
   },
   {
    "day": "2026-07-19",
    "city": "New York",
-   "avg_temperature_c": 24.1,
-   "min_temperature_c": 23.4,
+   "avg_temperature_c": 23.6,
+   "min_temperature_c": 21.1,
    "max_temperature_c": 25.2,
-   "avg_us_aqi": 143.0,
+   "avg_us_aqi": 142.0,
    "max_pm2_5": 70.8,
-   "observations": 5
+   "observations": 6
   },
   {
    "day": "2026-07-18",
